@@ -110,27 +110,56 @@ void printPath()
     }
 }
 
-void generate_pattern(vector<int>& pattern, vector<int>& targert_pattern)
+bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 {
-    double a = 123456708;
-    double b = 413026758;
+	cout << "checking..." << endl;
+	int count = 0;
+	for (int i = 0; i < pattern.size(); i++)
+	{
+		int j = 0;
+		for (; target_pattern[j] != pattern[i]; j++)
+			;
+		for (int n = i - 1; n >= 0; n--)
+		{
+			for (int m = j + 1; m < 9; m++)
+			{
+				if (pattern[n] == target_pattern[m])
+				{
+					count++;
+				}
+			}
+		}
+	}
+	if (count % 2 == 0)
+		return true;
+	return false;
+}
 
-    srand((unsigned)time(NULL));
-    pattern = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-    targert_pattern = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+void generate_pattern(vector<int> &pattern, vector<int> &targert_pattern)
+{
+	double a = 123456708;
+	double b = 413026758;
 
-    //打乱数组
-    int count = rand() % 10 + 10;
-    for (int i = 0; i < count; i++)
-    {
-        swap(pattern[rand() % 9], pattern[rand() % 9]);
-    }
+	srand((unsigned)time(NULL));
+	pattern = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+	targert_pattern = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-    count = rand() % 10 + 10;
-    for (int i = 0; i < count; i++)
-    {
-        swap(targert_pattern[rand() % 9], targert_pattern[rand() % 9]);
-    }
+	//打乱数组
+
+	int count = rand() % 10 + 10;
+	for (int i = 0; i < count; i++)
+	{
+		swap(targert_pattern[rand() % 9], targert_pattern[rand() % 9]);
+	}
+
+	do
+	{
+		count = rand() % 10 + 10;
+		for (int i = 0; i < count; i++)
+		{
+			swap(pattern[rand() % 9], pattern[rand() % 9]);
+		}
+	}while(inversion(pattern, targert_pattern) == false);
 }
 
 void print_pattern(vector<int> pattern)
