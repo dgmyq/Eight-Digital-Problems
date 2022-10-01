@@ -224,14 +224,14 @@ void printPath() {
 	}
 }
 
-void generate_pattern(vector<int>& pattern, vector<int>& targert_pattern)
+void generate_pattern(vector<int>& pattern, vector<int>& target_pattern)
 {
     double a = 123456708;
     double b = 413026758;
 
     srand((unsigned)time(NULL));
     pattern = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    targert_pattern = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    target_pattern = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
     //打乱数组
     int count = rand() % 10 + 10;
@@ -243,7 +243,7 @@ void generate_pattern(vector<int>& pattern, vector<int>& targert_pattern)
     count = rand() % 10 + 10;
     for (int i = 0; i < count; i++)
     {
-        swap(targert_pattern[rand() % 9], targert_pattern[rand() % 9]);
+        swap(target_pattern[rand() % 9], target_pattern[rand() % 9]);
     }
 }
 
@@ -282,5 +282,6 @@ int main() {
 		path.push_back(pattern);
 		printPath();
 	}
+	system("pause");
 	return 0;
 }
