@@ -115,21 +115,22 @@ bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 {
 	cout << "checking..." << endl;
 	int count = 0;
-	for (int i = 0; i < pattern.size(); i++)
+	for (int i = 0; i < pattern.size(); i++) //取出一个数判断它的逆序数量
 	{
 		int j = 0;
 		for (; target_pattern[j] != pattern[i]; j++)
-			;
-		for (int n = i - 1; n >= 0; n--)
-		{
-			for (int m = j + 1; m < 9; m++)
+			; //查找这个数在原序列中的位置
+			for (int n = i - 1; n >= 0; n--)
 			{
-				if (pattern[n] == target_pattern[m])
+				for (int m = j + 1; m < 9; m++)
 				{
-					count++;
+					if(target_pattern[m] == 0 || pattern[i] == 0)	continue;
+					if (pattern[n] == target_pattern[m])
+					{
+						count++;
+					}
 				}
 			}
-		}
 	}
 	if (count % 2 == 0)
 		return true;
@@ -260,9 +261,9 @@ bool DFS(vector<int> root, double& a)
 int main()
 {
     vector<int> pattern;
-    //generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
-    pattern = {7, 5, 1, 6, 2, 8, 3, 4, 0};
-    target_pattern = {7, 2, 5, 0, 6, 3, 1, 4, 8};
+    generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
+    // pattern = {5, 1, 2, 7, 4, 3, 0, 6, 8};
+    // target_pattern = {5, 1, 7, 8, 6, 0, 4, 2, 3};
     print_pattern(pattern);
     print_pattern(target_pattern);
     system("pause");

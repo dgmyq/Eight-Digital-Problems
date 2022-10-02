@@ -26,9 +26,9 @@ using namespace std;
  *
  */
 
-vector<int> target_pattern;		 //存放目标九宫格
-vector<vector<int>> path;		 //存放路径
-map<vector<int>, int> lookuptable;	//存放曾经查找过的pattern
+vector<int> target_pattern;		   //存放目标九宫格
+vector<vector<int>> path;		   //存放路径
+map<vector<int>, int> lookuptable; //存放曾经查找过的pattern
 
 /*
  * @pattern	移动前的九宫格
@@ -144,7 +144,8 @@ void add_to_lower_layer(vector<vector<int>> &lower_layer, vector<int> pattern)
 		return;
 	pair<map<vector<int>, int>::iterator, bool> Insert_Pair;
 	Insert_Pair = lookuptable.insert(pair<vector<int>, int>(pattern, 1));
-	if(Insert_Pair.second == true){
+	if (Insert_Pair.second == true)
+	{
 		lower_layer.push_back(pattern);
 	}
 	return;
@@ -153,8 +154,9 @@ void add_to_lower_layer(vector<vector<int>> &lower_layer, vector<int> pattern)
 vector<int> BFS(vector<vector<int>> upper_layer)
 {
 	vector<int> notfound;
-	if(upper_layer.size() == 0)	return notfound;
-	cout << upper_layer.size() << "-" << lookuptable.size() <<endl;
+	if (upper_layer.size() == 0)
+		return notfound;
+	cout << upper_layer.size() << "-" << lookuptable.size() << endl;
 	vector<vector<int>> lower_layer;
 	for (int i = 0; i < upper_layer.size(); i++)
 	{
@@ -260,22 +262,22 @@ bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 {
 	cout << "checking..." << endl;
 	int count = 0;
-	for (int i = 0; i < pattern.size(); i++)
+	for (int i = 0; i < pattern.size(); i++) //取出一个数判断它的逆序数量
 	{
-		if(pattern[i] == 0) continue;
 		int j = 0;
 		for (; target_pattern[j] != pattern[i]; j++)
-			;
-		for (int n = i - 1; n >= 0; n--)
-		{
-			for (int m = j + 1; m < 9; m++)
+			; //查找这个数在原序列中的位置
+			for (int n = i - 1; n >= 0; n--)
 			{
-				if (pattern[n] == target_pattern[m])
+				for (int m = j + 1; m < 9; m++)
 				{
-					count++;
+					if(target_pattern[m] == 0 || pattern[i] == 0)	continue;
+					if (pattern[n] == target_pattern[m])
+					{
+						count++;
+					}
 				}
 			}
-		}
 	}
 	if (count % 2 == 0)
 		return true;
@@ -306,7 +308,7 @@ void generate_pattern(vector<int> &pattern, vector<int> &targert_pattern)
 		{
 			swap(pattern[rand() % 9], pattern[rand() % 9]);
 		}
-	}while(inversion(pattern, targert_pattern) == false);
+	} while (inversion(pattern, targert_pattern) == false);
 }
 
 void print_pattern(vector<int> pattern)
@@ -332,8 +334,9 @@ int main()
 	vector<int> pattern;
 	cout << "generating pattern..." << endl;
 	generate_pattern(pattern, target_pattern); // generate original pattern and target pattern
-    //pattern = {7, 5, 1, 6, 2, 8, 3, 4, 0};
-    //target_pattern = {7, 2, 5, 0, 6, 3, 1, 4, 8};
+	// pattern = {1, 2, 3, 4, 5, 6, 7, 8};
+	// target_pattern = {6, 3, 1, 7, 5, 4, 2, 8};
+	inversion(pattern,target_pattern);
 	print_pattern(pattern);
 	print_pattern(target_pattern);
 
