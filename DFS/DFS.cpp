@@ -194,8 +194,9 @@ bool lookup_lookuptable(vector<int> pattern)
 
 bool DFS(vector<int> root, double& a)
 {
-    if (a > 20)    return false;
-    cout << "into" << endl;
+    cout << a << "-";
+    if (a > 200)    return false;
+    //cout << "into" << endl;
     if (root == target_pattern)
     {
         path.push_back(root);
@@ -265,9 +266,11 @@ int main()
     //target_pattern = {2, 8, 3, 0, 6, 4, 1, 7, 5};
     print_pattern(pattern);
     print_pattern(target_pattern);
+    system("pause");
 
     double a = 1;
     DFS(pattern, a);
+    cout << endl;
     if (path.size() != 0) {
         printPath();
     }
