@@ -4,12 +4,13 @@
 #include <String>
 #include <ctime>
 #include <cmath>
+#include <map>
 
 using namespace std;
 
 vector<int> target_pattern;      //存放目标九宫格
 vector<vector<int>> path;        //存放路径
-vector<vector<int>> lookuptable; //存放曾经查找过的pattern
+map<vector<int>, int> lookuptable;	//存放曾经查找过的pattern
 
 /*
  * @pattern	移动前的九宫格
@@ -182,20 +183,19 @@ void print_pattern(vector<int> pattern)
 
 bool lookup_lookuptable(vector<int> pattern)
 {
-    for (int i = 0; i < lookuptable.size(); i++)
-    {
-        if (lookuptable[i] == pattern)
-        {
-            return true;
-        }
-    }
-    return false;
+pair<map<vector<int>, int>::iterator, bool> Insert_Pair;
+	Insert_Pair = lookuptable.insert(pair<vector<int>, int>(pattern, 1));
+	if(Insert_Pair.second == true){
+        return false;   //不在lookuptable
+	}
+	return true;    //在lookuptable
 }
 
 bool DFS(vector<int> root, double& a)
 {
-    cout << a << "-";
-    if (a > 200)    return false;
+    //cout << a << "-";
+    cout << lookuptable.size() << "-";
+    if (a > 3000)    return false;
     //cout << "into" << endl;
     if (root == target_pattern)
     {
@@ -206,7 +206,6 @@ bool DFS(vector<int> root, double& a)
     {
         if (lookup_lookuptable(root) == true)
             return false;
-        lookuptable.push_back(root);
         vector<int> up = move_to(root, "up");
         if (up.size() != 0)
         {
@@ -261,9 +260,9 @@ bool DFS(vector<int> root, double& a)
 int main()
 {
     vector<int> pattern;
-    generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
-    //pattern = {2, 0, 3, 1, 8, 4, 7, 6, 5};
-    //target_pattern = {2, 8, 3, 0, 6, 4, 1, 7, 5};
+    //generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
+    pattern = {7, 5, 1, 6, 2, 8, 3, 4, 0};
+    target_pattern = {7, 2, 5, 0, 6, 3, 1, 4, 8};
     print_pattern(pattern);
     print_pattern(target_pattern);
     system("pause");

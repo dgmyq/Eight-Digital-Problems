@@ -4,6 +4,7 @@
 #include <String>
 #include <ctime>
 #include <cmath>
+#include <map>
 
 using namespace std;
 
@@ -27,7 +28,7 @@ using namespace std;
 
 vector<int> target_pattern;		 //存放目标九宫格
 vector<vector<int>> path;		 //存放路径
-vector<vector<int>> lookuptable; //存放曾经查找过的pattern
+map<vector<int>, int> lookuptable;	//存放曾经查找过的pattern
 
 /*
  * @pattern	移动前的九宫格
@@ -141,20 +142,19 @@ void add_to_lower_layer(vector<vector<int>> &lower_layer, vector<int> pattern)
 {
 	if (pattern.size() == 0)
 		return;
-	for (int i = 0; i < lookuptable.size(); i++)
-	{
-		if (lookuptable[i] == pattern)
-		{
-			return;
-		}
+	pair<map<vector<int>, int>::iterator, bool> Insert_Pair;
+	Insert_Pair = lookuptable.insert(pair<vector<int>, int>(pattern, 1));
+	if(Insert_Pair.second == true){
+		lower_layer.push_back(pattern);
 	}
-	lookuptable.push_back(pattern);
-	lower_layer.push_back(pattern);
+	return;
 }
 
 vector<int> BFS(vector<vector<int>> upper_layer)
 {
-	cout << upper_layer.size() << endl;
+	vector<int> notfound;
+	if(upper_layer.size() == 0)	return notfound;
+	cout << upper_layer.size() << "-" << lookuptable.size() <<endl;
 	vector<vector<int>> lower_layer;
 	for (int i = 0; i < upper_layer.size(); i++)
 	{
@@ -237,12 +237,6 @@ vector<int> BFS(vector<vector<int>> upper_layer)
 
 void printPath()
 {
-	// for (int i = 0; i < path.size(); i++) {
-	//	path.pop();
-	//	cout << " ";
-	//	if (i % 3 == 0)	cout << endl;
-	//	if (i % 9 == 0) cout << endl;
-	// }
 	for (int i = 0; i < path.size(); i++)
 	{
 		for (int j = 1; j <= path[i].size(); j++)
@@ -268,6 +262,7 @@ bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 	int count = 0;
 	for (int i = 0; i < pattern.size(); i++)
 	{
+		if(pattern[i] == 0) continue;
 		int j = 0;
 		for (; target_pattern[j] != pattern[i]; j++)
 			;
@@ -337,16 +332,18 @@ int main()
 	vector<int> pattern;
 	cout << "generating pattern..." << endl;
 	generate_pattern(pattern, target_pattern); // generate original pattern and target pattern
+    //pattern = {7, 5, 1, 6, 2, 8, 3, 4, 0};
+    //target_pattern = {7, 2, 5, 0, 6, 3, 1, 4, 8};
 	print_pattern(pattern);
 	print_pattern(target_pattern);
 
 	vector<vector<int>> upper_layer;
 	upper_layer.push_back(pattern);
-	lookuptable.push_back(pattern);
+	lookuptable.insert(pair<vector<int>, int>(pattern, 1));
 	vector<int> temp2 = BFS(upper_layer);
 	if (temp2.size() == 0)
 	{
-		cout << "未找到路径！！" << endl;
+		cout << "fail to find the path" << endl;
 	}
 	else
 	{
