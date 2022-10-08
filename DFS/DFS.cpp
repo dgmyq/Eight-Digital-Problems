@@ -113,7 +113,7 @@ void printPath()
 
 bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 {
-	cout << "checking..." << endl;
+	//cout << "checking..." << endl;
 	int count = 0;
 	for (int i = 0; i < pattern.size(); i++) //取出一个数判断它的逆序数量
 	{
@@ -195,7 +195,7 @@ pair<map<vector<int>, int>::iterator, bool> Insert_Pair;
 bool DFS(vector<int> root, double& a)
 {
     //cout << a << "-";
-    cout << lookuptable.size() << "-";
+    //cout << lookuptable.size() << "-";
     if (a > 3000)    return false;
     //cout << "into" << endl;
     if (root == target_pattern)
@@ -264,18 +264,26 @@ int main()
     generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
     // pattern = {5, 1, 2, 7, 4, 3, 0, 6, 8};
     // target_pattern = {5, 1, 7, 8, 6, 0, 4, 2, 3};
+    cout << "original pattern:" << endl;
     print_pattern(pattern);
+    cout << "target pattern:" << endl;
     print_pattern(target_pattern);
     system("pause");
 
-    double a = 1;
+    cout << "processing...please wait..." << endl;
+    clock_t start, end;
+    start = clock();
+    double a = 1;       //indicating the layer
     DFS(pattern, a);
-    cout << endl;
+    end = clock();
     if (path.size() != 0) {
+        cout << "successed in finding path:" << endl;
         printPath();
+        cout << "DFS time spending:" << (end - start)/1000.0 << "ms" << endl;
     }
     else {
         cout << "fail to find the path" << endl;
+        cout << "DFS time spending:" << (end - start)/1000.0 << "ms" << endl;
     }
 
     system("pause");

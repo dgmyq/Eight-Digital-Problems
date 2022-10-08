@@ -87,9 +87,8 @@ vector<int> move_to(vector<int> pattern, string mode)
     }
 }
 
-double heuristic(vector<int> current_pattern, vector<int> target_pattern) {
-    int temp = 0;
-    if (temp == 1) {
+double heuristic(vector<int> current_pattern, vector<int> target_pattern, int mode) {
+    if (mode == 1) {
         //第一个启发函数
         double distance = 0;
         for (int i = 0; i < current_pattern.size(); i++) {
@@ -99,7 +98,7 @@ double heuristic(vector<int> current_pattern, vector<int> target_pattern) {
         }
         return distance;
     }
-    else if (temp == 0) {
+    else if (mode == 0) {
         //第二个启发函数
         double distance = 0;
         for (int i = 0; i < current_pattern.size(); i++) {
@@ -119,7 +118,7 @@ double heuristic(vector<int> current_pattern, vector<int> target_pattern) {
 
 map<vector<int>, vector<int>> came_from;
 
-void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
+void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern, int mode)
 {
     priority_queue<pair<vector<int>, double>,
         vector<pair<vector<int>, double>>,
@@ -133,7 +132,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
 
      while (!frontier.empty())
      {
-         cout << frontier.size() << endl;
+         //cout << frontier.size() << endl;
          vector<int> current_pattern = frontier.top().first;
          frontier.pop();
          if (current_pattern == target_pattern)
@@ -149,7 +148,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
              if (cost_so_far.find(up) == cost_so_far.end() || new_cost < cost_so_far.find(up)->second)
              {
                  cost_so_far.insert(make_pair(up, new_cost));
-                 double priority = new_cost + heuristic(up, target_pattern);
+                 double priority = new_cost + heuristic(up, target_pattern, mode);
                  frontier.push(make_pair(up, priority));
                  came_from.insert(make_pair(up, current_pattern));
              }
@@ -163,7 +162,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
              if (cost_so_far.find(down) == cost_so_far.end() || new_cost < cost_so_far.find(down)->second)
              {
                  cost_so_far.insert(make_pair(down, new_cost));
-                 double priority = new_cost + heuristic(down, target_pattern);
+                 double priority = new_cost + heuristic(down, target_pattern, mode);
                  frontier.push(make_pair(down, priority));
                  came_from.insert(make_pair(down, current_pattern));
              }
@@ -177,7 +176,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
              if (cost_so_far.find(left) == cost_so_far.end() || new_cost < cost_so_far.find(left)->second)
              {
                  cost_so_far.insert(make_pair(left, new_cost));
-                 double priority = new_cost + heuristic(left, target_pattern);
+                 double priority = new_cost + heuristic(left, target_pattern, mode);
                  frontier.push(make_pair(left, priority));
                  came_from.insert(make_pair(left, current_pattern));
              }
@@ -191,7 +190,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
              if (cost_so_far.find(right) == cost_so_far.end() || new_cost < cost_so_far.find(right)->second)
              {
                  cost_so_far.insert(make_pair(right, new_cost));
-                 double priority = new_cost + heuristic(right, target_pattern);
+                 double priority = new_cost + heuristic(right, target_pattern, mode);
                  frontier.push(make_pair(right, priority));
                  came_from.insert(make_pair(right, current_pattern));
              }
@@ -201,7 +200,7 @@ void heuristic_algorithm(vector<int> pattern, vector<int> target_pattern)
 
 bool inversion(vector<int>& pattern, vector<int>& target_pattern)
 {
-    cout << "checking..." << endl;
+    //cout << "checking..." << endl;
     int count = 0;
     for (int i = 0; i < pattern.size(); i++) //取出一个数判断它的逆序数量
     {
@@ -278,15 +277,35 @@ int main()
     generate_pattern(pattern, target_pattern);
     //pattern = { 1, 2, 3, 4, 0, 5, 6, 7, 8 };
     //target_pattern = { 1, 3, 0, 4, 2, 5, 6, 7, 8 };
+    cout << "original pattern:" << endl;
     print_pattern(pattern);
+    cout << "target pattern:" << endl;
     print_pattern(target_pattern);
     system("pause");
 
-    heuristic_algorithm(pattern, target_pattern);
+    cout << "base on position heuristic algorithm processing...\nplease wait..." << endl;
+    clock_t start, end;
+    start = clock();
+    heuristic_algorithm(pattern, target_pattern, 1);
+    end = clock();
     for (vector<int> temp = target_pattern; temp.size() != 0;) {
         print_pattern(temp);
         map<vector<int>, vector<int>>::iterator iter = came_from.find(temp);
         temp = iter->second;
     }
+    cout << "base on position time spending:" << (end - start)/1000.0 << "ms" << endl;
+
+    cout << "base on Euclidean distance heuristic algorithm processing...\nplease wait..." << endl;
+    start = clock();
+    map<vector<int>, vector<int>>().swap(came_from);    //reset came_from
+    heuristic_algorithm(pattern, target_pattern, 0);
+    end = clock();
+    for (vector<int> temp = target_pattern; temp.size() != 0;) {
+        print_pattern(temp);
+        map<vector<int>, vector<int>>::iterator iter = came_from.find(temp);
+        temp = iter->second;
+    }
+    cout << "base on Euclidean distance time spending:" << (end - start)/1000.0 << "ms" << endl;
+
     system("pause");
 }

@@ -8,24 +8,6 @@
 
 using namespace std;
 
-/*
- * 思路：
- * 遍历二维数组的下一层
- * 有两个for循环
- * for(upper_layer的节点){
- *	for(upper_layer节点的子节点){
- *		判断是不是要匹配的pattern，是的话就返回，不是的话就下一步
- *		if(子节点在lookuptable里面)	不用去检查
- *		else(子节点不在lookuptable里面)
- *			去hash，把子节点添加到lookuptable里面
- *			将该子节点添加到lower_layer
- *	}
- * }
- * 先去hash，如果hash里面没有的话添加到hash里面然后去判断符不符合要匹配的pattern
- * 如果有的话就不用去检查该pattern，转到下一个pattern去检查
- *
- */
-
 vector<int> target_pattern;		   //存放目标九宫格
 vector<vector<int>> path;		   //存放路径
 map<vector<int>, int> lookuptable; //存放曾经查找过的pattern
@@ -156,7 +138,7 @@ vector<int> BFS(vector<vector<int>> upper_layer)
 	vector<int> notfound;
 	if (upper_layer.size() == 0)
 		return notfound;
-	cout << upper_layer.size() << "-" << lookuptable.size() << endl;
+	//cout << upper_layer.size() << "-" << lookuptable.size() << endl;
 	vector<vector<int>> lower_layer;
 	for (int i = 0; i < upper_layer.size(); i++)
 	{
@@ -260,7 +242,7 @@ void printPath()
 
 bool inversion(vector<int> &pattern, vector<int> &target_pattern)
 {
-	cout << "checking..." << endl;
+	//cout << "checking..." << endl;
 	int count = 0;
 	for (int i = 0; i < pattern.size(); i++) //取出一个数判断它的逆序数量
 	{
@@ -333,25 +315,35 @@ int main()
 {
 	vector<int> pattern;
 	cout << "generating pattern..." << endl;
-	generate_pattern(pattern, target_pattern); // generate original pattern and target pattern
-	// pattern = {1, 2, 3, 4, 5, 6, 7, 8};
+	generate_pattern(pattern, target_pattern); // generate random original pattern and target pattern
+	// pattern = {1, 2, 3, 4, 5, 6, 7, 8};			//or you can input the pattern you want
 	// target_pattern = {6, 3, 1, 7, 5, 4, 2, 8};
-	inversion(pattern,target_pattern);
+	cout << "original pattern:" << endl;
 	print_pattern(pattern);
+	cout << "target pattern:" << endl;
 	print_pattern(target_pattern);
+	system("pause");
 
+	cout << "processing...please wait..." << endl;
+	clock_t start, end;
+	start = clock();
 	vector<vector<int>> upper_layer;
 	upper_layer.push_back(pattern);
 	lookuptable.insert(pair<vector<int>, int>(pattern, 1));
-	vector<int> temp2 = BFS(upper_layer);
+	vector<int> temp2 = BFS(upper_layer);			//starting BFS
+	end = clock();
+
 	if (temp2.size() == 0)
 	{
 		cout << "fail to find the path" << endl;
+		cout << "BFS time spending:" << (end - start)/1000.0 << "ms" << endl;
 	}
 	else
 	{
+		cout << "successed in finding path:" << endl;
 		path.push_back(pattern);
 		printPath();
+		cout << "BFS time spending:" << (end - start)/1000.0 << "ms" << endl;
 	}
 	system("pause");
 	return 0;
