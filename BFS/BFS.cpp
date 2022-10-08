@@ -1,3 +1,4 @@
+//BFS.cpp
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -315,9 +316,9 @@ int main()
 {
 	vector<int> pattern;
 	cout << "generating pattern..." << endl;
-	generate_pattern(pattern, target_pattern); // generate random original pattern and target pattern
-	// pattern = {1, 2, 3, 4, 5, 6, 7, 8};			//or you can input the pattern you want
-	// target_pattern = {6, 3, 1, 7, 5, 4, 2, 8};
+	//generate_pattern(pattern, target_pattern); // generate random original pattern and target pattern
+	pattern = {6, 0, 5, 3, 7, 4, 1, 8, 2};			//or you can input the pattern you want
+	target_pattern = {4, 3, 8, 0, 2, 6, 7, 1, 5};
 	cout << "original pattern:" << endl;
 	print_pattern(pattern);
 	cout << "target pattern:" << endl;

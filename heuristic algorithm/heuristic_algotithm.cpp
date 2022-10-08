@@ -1,3 +1,4 @@
+//heuristic_algotithm.cpp
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -274,9 +275,9 @@ int main()
 {
     vector<int> pattern;
     vector<int> target_pattern;
-    generate_pattern(pattern, target_pattern);
-    //pattern = { 1, 2, 3, 4, 0, 5, 6, 7, 8 };
-    //target_pattern = { 1, 3, 0, 4, 2, 5, 6, 7, 8 };
+    //generate_pattern(pattern, target_pattern);
+    pattern = {6, 0, 5, 3, 7, 4, 1, 8, 2};			//or you can input the pattern you want
+	target_pattern = {4, 3, 8, 0, 2, 6, 7, 1, 5};
     cout << "original pattern:" << endl;
     print_pattern(pattern);
     cout << "target pattern:" << endl;

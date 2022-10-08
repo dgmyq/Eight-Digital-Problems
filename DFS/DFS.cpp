@@ -1,3 +1,4 @@
+//DFS.cpp
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -196,7 +197,7 @@ bool DFS(vector<int> root, double& a)
 {
     //cout << a << "-";
     //cout << lookuptable.size() << "-";
-    if (a > 3000)    return false;
+    if (a > 3020)    return false;
     //cout << "into" << endl;
     if (root == target_pattern)
     {
@@ -261,9 +262,9 @@ bool DFS(vector<int> root, double& a)
 int main()
 {
     vector<int> pattern;
-    generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
-    // pattern = {5, 1, 2, 7, 4, 3, 0, 6, 8};
-    // target_pattern = {5, 1, 7, 8, 6, 0, 4, 2, 3};
+    //generate_pattern(pattern, target_pattern);	//generate original pattern and target pattern
+    pattern = {6, 0, 5, 3, 7, 4, 1, 8, 2};			//or you can input the pattern you want
+	target_pattern = {4, 3, 8, 0, 2, 6, 7, 1, 5};
     cout << "original pattern:" << endl;
     print_pattern(pattern);
     cout << "target pattern:" << endl;
